@@ -1,0 +1,19 @@
+
+#include <iostream>
+
+using namespace std;
+int main()
+{
+   long long int fib[80] = {1, 1};
+   for (int i = 2; i <= 80; i++)
+      fib[i] = fib[i - 1] + fib[i - 2];
+
+   int n;
+   while (cin >> n && n)
+   {
+      cout << fib[n] << "\n";
+   }
+
+   system("pause");
+   return 0;
+}
