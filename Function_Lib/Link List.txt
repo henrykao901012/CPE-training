@@ -1,0 +1,105 @@
+class chain
+{
+public:
+    int num;
+    chain *p;
+
+    static void insert(chain *&, int, int);
+    static void push_back(chain *&, int);
+
+    static void del(chain *&, int);
+    static void pop(chain *&);
+
+    static void print(chain *);
+    static int at(chain *, int);
+    static void reverse(chain *&);
+
+    static int size(chain *);
+    inline static const string POS_ERROR = "Invalid position.";
+};
+
+int chain::size(chain *start)
+{
+    int count = 0;
+    while (start)
+    {
+        start = start->p;
+        count++;
+    }
+    return count;
+}
+
+void chain::insert(chain *&start, int pos, int n)
+{
+    if (pos < 0 || pos > size(start))
+        throw POS_ERROR;
+    if (!pos)
+    {
+        chain *created = new chain;
+        created->num = n;
+        created->p = start;
+        start = created;
+        return;
+    }
+    insert(start->p, pos - 1, n);
+}
+
+void chain::push_back(chain *&start, int n)
+{
+   insert(start, size(start), n);
+}
+
+void chain::del(chain *&start, int pos)
+{
+    if (pos < 0 || pos >= size(start))
+        throw POS_ERROR;
+    if (!pos)
+    {
+        chain *ready_to_del = start;
+        start = start->p;
+        delete ready_to_del;
+        return;
+    }
+    del(start->p, pos - 1);
+}
+
+void chain::pop(chain *&start)
+{
+    if(!size(start))
+        throw "Empty Segment Fault";
+    del(start, size(start) - 1);
+}
+
+void chain::print(chain *start)
+{
+    //cout << "Created Linked list is:";
+    stringstream ans;
+    while (start)
+    {
+        ans << start->num << " ";
+        start = start->p;
+    }
+    cout << ans.str().substr(0, ans.str().size() - 1) << "\n";
+}
+
+int chain::at(chain *start, int pos)
+{
+    if (pos < 0 || pos >= size(start))
+        throw POS_ERROR;
+    while (pos--)
+        start = start->p;
+    return start->num;
+}
+
+void chain::reverse(chain *&start)
+{
+    chain *a = 0, *b;
+    while (start)
+    {
+        b = a;
+        a = start;
+        start = start->p;
+        a->p = b;
+    }
+    start = a;
+}
